@@ -14,8 +14,12 @@ def getAllStudents(conn):
         with conn.cursor() as cur:
             cur.execute("SELECT * FROM students")
             rows = cur.fetchall()
+            print("ID    | First Name  | Last Name   | Email                      | Enrollment Date")
+            print("-" * 75)  # Separator line
             for row in rows:
-                print(row)
+                #just reformatting the date display for each row (YYYY-MM-DD)
+                enrollment_date_formatted = row[4].strftime('%Y-%m-%d')
+                print(f"{row[0]:<5} | {row[1]:<11} | {row[2]:<10} | {row[3]:<27} | {enrollment_date_formatted}")
     except Exception as e:
         print("Error:", e)
 
@@ -70,7 +74,7 @@ try:
             print("4. Delete a student\n")
             print("5. Exit\n")
             
-            choice = input("enter your choice (1-5): ")
+            choice = input("enter your choice (1-5): \n")
             
             if choice == '1':
                     getAllStudents(conn)
@@ -88,7 +92,6 @@ try:
                 student_id = int(input("Enter student ID: "))
                 deleteStudent(conn, student_id)
             elif choice == '5':
-                print("Exiting...")
                 break
             else:
                 print("Invalid choice. Please enter a number between 1 and 5.")
