@@ -33,6 +33,7 @@ def addStudent(conn, first_name, last_name, email, enrollment_date):
             conn.commit()
     except Exception as e:
         print("Error:", e)
+        conn.rollback()
 
 # update the email address for a student with the specified student_id
 def updateStudentEmail(conn, student_id, new_email):
@@ -47,6 +48,7 @@ def updateStudentEmail(conn, student_id, new_email):
             conn.commit()
     except Exception as e:
         print("Error:", e)
+        conn.rollback()
 
 # delete the record of the student with the specified student_id
 def deleteStudent(conn, student_id):
@@ -61,12 +63,14 @@ def deleteStudent(conn, student_id):
             conn.commit()
     except Exception as e:
         print("Error:", e)
+        conn.rollback()
 
 # Attempt to connect to database with provided information. 
 # You may need to change data info to test on your own database 
 try:
     with psycopg.connect(host = hostname, dbname = database, user = username,password = pswd, port = port_id) as conn:
         while True:
+            # Request user input
             print("\nPlease Select an operation:\n ")
             print("1. Retrieve and display all records\n")
             print("2. Add a new student\n")
@@ -75,10 +79,11 @@ try:
             print("5. Exit\n")
             
             choice = input("enter your choice (1-5): \n")
-            
+            #pick an operation by user
             if choice == '1':
                     getAllStudents(conn)
             elif choice == '2':
+                #input the additional information for adding a new student
                 first_name = input("Enter first name: ")
                 last_name = input("Enter last name: ")
                 email = input("Enter email: ")
