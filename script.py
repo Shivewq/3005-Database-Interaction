@@ -12,6 +12,7 @@ pswd = 'postgres'
 def getAllStudents(conn):
     try:
         with conn.cursor() as cur:
+            #select all entries in students table
             cur.execute("SELECT * FROM students")
             rows = cur.fetchall()
             print("ID    | First Name  | Last Name   | Email                      | Enrollment Date")
@@ -27,6 +28,7 @@ def getAllStudents(conn):
 def addStudent(conn, first_name, last_name, email, enrollment_date):
     try:
         with conn.cursor() as cur:
+            #insert into students, provided the input parameters
             cur.execute("INSERT INTO students (first_name, last_name, email, enrollment_date) VALUES (%s, %s, %s, %s)",
                         (first_name, last_name, email, enrollment_date))
             print("Student added successfully!")
@@ -39,6 +41,8 @@ def addStudent(conn, first_name, last_name, email, enrollment_date):
 def updateStudentEmail(conn, student_id, new_email):
     try:
         with conn.cursor() as cur:
+            #use UPDATE sql command and SET for email attribute
+            #find the student WHERE student_id = student_id(parameter)
             cur.execute("UPDATE students SET email = %s WHERE student_id = %s",
                         (new_email, student_id))
             if cur.rowcount > 0:
@@ -54,6 +58,7 @@ def updateStudentEmail(conn, student_id, new_email):
 def deleteStudent(conn, student_id):
     try:
         with conn.cursor() as cur:
+            #use DELETE sql command where the student_id = student_id(parameter)
             cur.execute("DELETE FROM students WHERE student_id = %s",
                         (student_id,))
             if cur.rowcount > 0:
